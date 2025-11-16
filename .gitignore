@@ -1,0 +1,22 @@
+# Compiled class files
+*.class
+
+# Generated parser files
+Parse/Grm.java
+Parse/Grm.err
+Parse/Grm.out
+Parse/Yylex.java
+
+# Backup files
+*~
+*.swp
+*.bak
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
