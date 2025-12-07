@@ -48,18 +48,39 @@ public class MipsFrame extends Frame {
     }
     
     public Access allocLocal(boolean escape) {
-        if (escape) {
-            // Allocate in frame (grows downward)
-            frameOffset -= WORD_SIZE;
+        return allocLocal(escape, WORD_SIZE);
+    }
+    
+    public Access allocLocal(boolean escape, int size) {
+        if (escape || size > WORD_SIZE) {
+            int allocSize = size;
+            if (allocSize % WORD_SIZE != 0) {
+                allocSize = ((allocSize / WORD_SIZE) + 1) * WORD_SIZE;
+            }
+            frameOffset -= allocSize;
             return new InFrame(frameOffset);
         } else {
-            // Allocate in temporary register
             return new InReg(new Temp());
         }
     }
     
     public Access[] formals() {
         return formalList.toArray(new Access[formalList.size()]);
+    }
+    
+    private static Temp fp = new Temp();
+    private static Temp rv = new Temp();
+    
+    public Temp FP() {
+        return fp;
+    }
+    
+    public Temp RV() {
+        return rv;
+    }
+    
+    public int wordSize() {
+        return WORD_SIZE;
     }
     
     public String toString() {

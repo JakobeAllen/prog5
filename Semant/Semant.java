@@ -107,7 +107,6 @@ public class Semant {
         Type type = transTypeSpec(dec.type);
         
         if (dec.init != null) {
-            // Special handling for initializer lists
             if (dec.init instanceof InitList) {
                 checkInitList((InitList)dec.init, type, frame);
             } else {
@@ -120,7 +119,8 @@ public class Semant {
         
         Access access = null;
         if (frame != null) {
-            access = frame.allocLocal(dec.escape);
+            int size = type.size();
+            access = frame.allocLocal(dec.escape, size);
         }
         
         venv.put(dec.name, new VarEntry(type, access));
@@ -151,6 +151,8 @@ public class Semant {
         if (dec.body != null) {
             transStmt(dec.body, returnType, frame);
         }
+        
+        System.err.println(frame.toString());
         
         venv.endScope();
     }
